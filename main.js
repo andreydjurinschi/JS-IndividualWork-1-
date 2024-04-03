@@ -1,4 +1,4 @@
-const transactions = require("./transactions.json");
+let transactions = require("./transactions.json");
 
 
 /**
@@ -8,10 +8,10 @@ const transactions = require("./transactions.json");
 class TransactionAnalyzer {
   /**
    * create an example of transaction analyzer
-   * @constructor
+   * @letructor
    * @param {Array} transactions 
    */
-    constructor(transactions) {
+    letructor(transactions) {
    /**
     * transaction array
     * @type {Array}
@@ -66,10 +66,10 @@ class TransactionAnalyzer {
     calculateTotalAmountByDate(year, month, day) {
       let sum = 0;
       for(let i = 0; i < this.transactions.length; i++) {
-          const transactionDate = transactions[i].transaction_date;
-          const transactionYear = parseInt(transactionDate.split('-')[0]);
-          const transactionMonth = parseInt(transactionDate.split('-')[1]);
-          const transactionDay = parseInt(transactionDate.split('-')[2]);
+          let transactionDate = transactions[i].transaction_date;
+          let transactionYear = parseInt(transactionDate.split('-')[0]);
+          let transactionMonth = parseInt(transactionDate.split('-')[1]);
+          let transactionDay = parseInt(transactionDate.split('-')[2]);
           if ((year == null || transactionYear === year) &&
               (month == null || transactionMonth === month) &&
               (day == null || transactionDay === day)) {
@@ -105,11 +105,11 @@ class TransactionAnalyzer {
      * @returns {Array} of transactions by the given date range
      */
     getTransactionsInDateRange(startDate, endDate){
-      const transactions_date_array = [];
-      const begin = new Date(startDate);
-      const end = new Date(endDate);
+      let transactions_date_array = [];
+      let begin = new Date(startDate);
+      let end = new Date(endDate);
       for (let i = 0; i < this.transactions.length; i++) {
-        const transactionsDate = new Date(this.transactions[i].transaction_date) ;
+        let transactionsDate = new Date(this.transactions[i].transaction_date) ;
         if (transactionsDate >= begin && transactionsDate <= end) {
           transactions_date_array.push(this.transactions[i])
         }
@@ -125,10 +125,10 @@ class TransactionAnalyzer {
      * @returns {Array} of transactions by the given merchant name
      */
     getTransactionsByMerchant(merchantName){
-      const transactions_merchant_array = [];
-      const name = merchantName;
+      let transactions_merchant_array = [];
+      let name = merchantName;
       for (let i = 0; i < this.transactions.length; i++) {
-        const merchant_name = this.transactions[i].merchant_name;
+        let merchant_name = this.transactions[i].merchant_name;
         if (name === merchant_name) {
           transactions_merchant_array.push(this.transactions[i]);
         }
@@ -142,9 +142,9 @@ class TransactionAnalyzer {
      * @returns {number} returns average amount of all transactions
      */
     calculateAverageTransactionAmount(){
-      const total_tr_sum = this.calculateTotalAmount();
-      const getAllTransactions = this.transactions.length;
-      const average_sum = total_tr_sum / getAllTransactions;
+      let total_tr_sum = this.calculateTotalAmount();
+      let getAllTransactions = this.transactions.length;
+      let average_sum = total_tr_sum / getAllTransactions;
       return average_sum
     }
 
@@ -156,10 +156,10 @@ class TransactionAnalyzer {
      * @returns {Array} of transactions by the giben amount range
      */
     getTransactionsByAmountRange(minAmount, maxAmount){
-      const transaction_array_by_amount_range = [];
+      let transaction_array_by_amount_range = [];
       for (let i = 0; i < this.transactions.length; i++) 
       {
-      const transacionAmount = this.transactions[i].transaction_amount
+      let transacionAmount = this.transactions[i].transaction_amount
       if(transacionAmount >= minAmount && transacionAmount <= maxAmount) {
         transaction_array_by_amount_range.push(this.transactions[i]);
       }  
@@ -191,9 +191,9 @@ class TransactionAnalyzer {
      * @returns {srt} of most transaction month
      */
     findMostTransactionsMonth() {
-        const monthCounts = [0, 0, 0, 0]; 
+        let monthCounts = [0, 0, 0, 0]; 
         for (let i = 0; i < this.transactions.length; i++) {
-            const transactionMonth = parseInt(this.transactions[i].transaction_date.split('-')[1]);
+            let transactionMonth = parseInt(this.transactions[i].transaction_date.split('-')[1]);
             monthCounts[transactionMonth - 1]++;
         }
     
@@ -223,9 +223,9 @@ class TransactionAnalyzer {
    * @returns {srt} of most debit transaction month
    */
     findMostDebitTransactionMonth() {
-        const monthCounts = [0, 0, 0, 0]; 
+        let monthCounts = [0, 0, 0, 0]; 
         for (let i = 0; i < this.transactions.length; i++) {
-            const transactionMonth = parseInt(this.transactions[i].transaction_date.split('-')[1]) - 1;
+            let transactionMonth = parseInt(this.transactions[i].transaction_date.split('-')[1]) - 1;
             if (this.transactions[i].transaction_type === 'debit') {
                 monthCounts[transactionMonth]++;
             }
@@ -255,8 +255,8 @@ class TransactionAnalyzer {
      * @returns {str} of most transaction type or equal
      */
     mostTransactionTypes(){
-        const debitTransaction = this.getTransactionByType("debit").length
-        const creditTransaction = this.getTransactionByType("credit").length
+        let debitTransaction = this.getTransactionByType("debit").length
+        let creditTransaction = this.getTransactionByType("credit").length
         if(debitTransaction > creditTransaction) {
             return 'debit';
         } else if (debitTransaction < creditTransaction) {
@@ -274,11 +274,11 @@ class TransactionAnalyzer {
      * @returns {Array} of all transactions before the given date
      */
     getTransactionsBeforeDate(date) {
-        const transactionsBeforeDate = [];
-        const beforeDate = new Date(date);
+        let transactionsBeforeDate = [];
+        let beforeDate = new Date(date);
 
         for (let i = 0; i < this.transactions.length; i++) {
-            const transactionDate = new Date(this.transactions[i].transaction_date);
+            let transactionDate = new Date(this.transactions[i].transaction_date);
         if (beforeDate > transactionDate) {
             transactionsBeforeDate.push(this.transactions[i]);
             }
@@ -295,7 +295,7 @@ class TransactionAnalyzer {
      */
     findTransactionById(id) {
         for (let i = 0; i < this.transactions.length; i++) {
-        const transaction = this.transactions[i];
+        let transaction = this.transactions[i];
         if (transaction.transaction_id === id) {
             return transaction;
             }
@@ -310,7 +310,7 @@ class TransactionAnalyzer {
      * @returns {Array} of all desctiptions
      */
     mapTransactionDescriptions(){
-        const description = [];
+        let description = [];
         for(let i = 0; i < this.transactions.length; i++) {
         let desc = this.transactions[i].transaction_description;
         description.push(desc); 
@@ -322,7 +322,8 @@ class TransactionAnalyzer {
 
 let obj1 = new TransactionAnalyzer(transactions);
 
-let average_sum = obj1.calculateAverageTransactionAmount()
+let average_sum = obj1.()
+console.log(average_sum)
 
 
 
