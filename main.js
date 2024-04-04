@@ -1,3 +1,5 @@
+const transactions = require("./transactions.json");
+
 /**
  * Class analyzer for transactions
  * @class
@@ -8,7 +10,7 @@ class TransactionAnalyzer {
    * @letructor
    * @param {Array} transactions 
    */
-    letructor(transactions) {
+    constructor(transactions) {
    /**
     * transaction array
     * @type {Array}
@@ -228,7 +230,7 @@ class TransactionAnalyzer {
             }
         }
         let mostDebitMonth = 0;
-        for (let i = 1; i < monthCounts.length; i++) {
+        for (let i = 0; i < monthCounts.length; i++) {
             if (monthCounts[i] > monthCounts[mostDebitMonth]) {
                 mostDebitMonth = i;
             }
@@ -317,12 +319,103 @@ class TransactionAnalyzer {
 
 }
 
-const transactions = require("./transactions.json");
+// Check!!!
 const obj = new TransactionAnalyzer(transactions);
 
-let cumalala = obj.calculateTotalAmount()
-console.log(cumalala)
+let new_tr1 = {
+    "transaction_id": "121",
+    "transaction_date": "2019-02-28",
+    "transaction_amount": 1800.00,
+    "transaction_type": "debit",
+    "transaction_description": "Shopping at USM",
+    "merchant_name": "FashionStoreUSM",
+    "card_type": "STEPUHA"
+  }
+  let new_tr2 = {
+    "transaction_id": "122",
+    "transaction_date": "2019-02-28",
+    "transaction_amount": 1800.00,
+    "transaction_type": "debit",
+    "transaction_description": "Shopping at USM",
+    "merchant_name": "FashionStoreUSM",
+    "card_type": "STEPUHAURA"
+  }
+  let new_tr3 = {
+    "transaction_id": "123",
+    "transaction_date": "2019-02-28",
+    "transaction_amount": 1800.00,
+    "transaction_type": "debit",
+    "transaction_description": "Shopping at USM",
+    "merchant_name": "FashionStoreUSM",
+    "card_type": "STEPUHADA"
+  }
+  let new_tr4 = {
+    "transaction_id": "124",
+    "transaction_date": "2019-02-28",
+    "transaction_amount": 1800.00,
+    "transaction_type": "debit",
+    "transaction_description": "Shopping at USM",
+    "merchant_name": "FashionStoreUSM",
+    "card_type": "STEPUHANET"
+  }
+console.log(obj.addTransaction(new_tr1))
+console.log(obj.addTransaction(new_tr2))
+console.log(obj.addTransaction(new_tr3))
+console.log(obj.addTransaction(new_tr4)) //add new  tr
 
 
+console.log(obj.findTransactionById('121'))//find(show) by id
+
+
+let sum = obj.calculateTotalAmount()// SUM
+console.log(sum)
+
+
+let sum_date = obj.calculateTotalAmountByDate(null, 2, null )// sum by date
+console.log(sum_date)
+
+
+let type = obj.getTransactionByType('debit')// get by type
+console.log(type)
+
+
+let dateRange = obj.getTransactionsInDateRange('2019-03-05','2019-03-07')
+console.log(dateRange)
+
+
+let merchName = obj.getTransactionsByMerchant('FashionStoreUSM')
+console.log(merchName)
+
+
+let average_sum = obj.calculateAverageTransactionAmount()
+console.log(average_sum)
+
+
+let amount_range = obj.getTransactionsByAmountRange(150, 1900)
+console.log(amount_range)
+
+
+let debit_amount = obj.calculateTotalDebitAmount()
+console.log(debit_amount)
+
+
+let most_tr_ymd = obj.findMostTransactionsMonth()
+console.log(most_tr_ymd)
+
+
+let most_debit_tr_ymd = obj.findMostDebitTransactionMonth()
+console.log(most_debit_tr_ymd)
+
+
+let most_tr_types = obj.mostTransactionTypes()
+console.log(most_tr_types)
+
+
+let get_tr_before_date = obj.getTransactionsBeforeDate('2019-01-03')
+console.log(get_tr_before_date)
+
+
+let tr_desc = obj.mapTransactionDescriptions()
+console.log(tr_desc)
 
 

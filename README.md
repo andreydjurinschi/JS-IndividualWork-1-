@@ -146,7 +146,7 @@ calculateAverageTransactionAmount(){
 let  average_sum  =  total_tr_sum  /  getAllTransactions;
 return  average_sum
 ```
-# getTransactionsByAmountRange(minAmount, maxAmount)
+## getTransactionsByAmountRange(minAmount, maxAmount)
 
 ```js
 getTransactionsByAmountRange(minAmount, maxAmount){
@@ -203,4 +203,196 @@ let monthCounts = [0, 0, 0, 0];
         }
     }
 ```
-Метод `findMostTransactionsMonth()` вернет нам месяц, в котором было больше всего транзакций. Для начала я создаю массив с 4-мя элементами, которые равны `0`. Они отображают 4 месяца. Так как массивы индексируются с 0, а номера месяцев начинаются с 1, мы вычитаем 1 из `transactionMonth`, чтобы получить правильный индекс массива, после чего его увеличиваем на единицу(кол-во транзакций). ДАлее создаем переменную `mostTransactionMonth` и цикл `for` для перебора массива `monthCounts`. Если текущий имеет наибольшее значение, чем предыдущий, то переменная `mostTransactionsMonth` будет равна индексу этого месяца в массиве. `most_tr_month` поможет мне вернуть индекс = месяцу для удобства
+Метод `findMostTransactionsMonth()` вернет нам месяц, в котором было больше всего транзакций. Для начала я создаю массив с 4-мя элементами, которые равны `0`. Они отображают 4 месяца. Так как массивы индексируются с 0, а номера месяцев начинаются с 1, мы вычитаем 1 из `transactionMonth`, чтобы получить правильный индекс массива, после чего его увеличиваем на единицу(кол-во транзакций). ДАлее создаем переменную `mostTransactionMonth` и цикл `for` для перебора массива `monthCounts`. Если текущий имеет наибольшее значение, чем предыдущий, то переменная `mostTransactionsMonth` будет равна индексу этого месяца в массиве. `most_tr_month` поможет мне вернуть индекс = месяцу для удобства. Далее индекс используется для определения названия месяца
+## findMostDebitTransactionMonth()
+```js
+findMostDebitTransactionMonth() {
+        let monthCounts = [0, 0, 0, 0]; 
+        for (let i = 0; i < this.transactions.length; i++) {
+            let transactionMonth = parseInt(this.transactions[i].transaction_date.split('-')[1]) - 1;
+            if (this.transactions[i].transaction_type === 'debit') {
+                monthCounts[transactionMonth]++;
+            }
+        }
+        let mostDebitMonth = 0;
+        for (let i = 0; i < monthCounts.length; i++) {
+            if (monthCounts[i] > monthCounts[mostDebitMonth]) {
+                mostDebitMonth = i;
+            }
+        }
+        let most_debit_tr_month = mostDebitMonth + 1
+        if(most_debit_tr_month === 1) {
+            return 'January';
+        }else if (most_debit_tr_month === 2) {
+            return 'February';
+        }else if (most_debit_tr_month === 3) {
+            return 'March';
+        }else {
+            return 'April';
+        }
+    }
+```
+Данный метод работает по такому же принципу.
+## mostTransactionTypes()
+```js
+    mostTransactionTypes(){
+        let debitTransaction = this.getTransactionByType("debit").length
+        let creditTransaction = this.getTransactionByType("credit").length
+        if(debitTransaction > creditTransaction) {
+            return 'debit';
+        } else if (debitTransaction < creditTransaction) {
+            return 'credit';
+        }else {
+            return 'equal';
+        }
+    }
+```
+Данный метод сравнивает типы всех транзакций и выводит наибольший тип (`equal` при равном кол-ве). Сначала получаю в переменные длину каждого типа, после чего начинаю его сравнивать с другим типом.
+## getTransactionsBeforeDate(date)
+```js
+    getTransactionsBeforeDate(date) {
+        let transactionsBeforeDate = [];
+        let beforeDate = new Date(date);
+
+        for (let i = 0; i < this.transactions.length; i++) {
+            let transactionDate = new Date(this.transactions[i].transaction_date);
+        if (beforeDate > transactionDate) {
+            transactionsBeforeDate.push(this.transactions[i]);
+            }
+        }
+        return transactionsBeforeDate;
+    }
+```
+Метод `getTransactionsBeforeDate(date)` записывает в аустой массив каждую транзакцию, которая находится до введенной даты.
+ ## findTransactionById(id) 
+ ```js
+     findTransactionById(id) {
+        for (let i = 0; i < this.transactions.length; i++) {
+        let transaction = this.transactions[i];
+        if (transaction.transaction_id === id) {
+            return transaction;
+            }
+        }
+        return null;
+    }
+```
+Принцип работы данного метода индентичен другим методам в моей программе
+## mapTransactionDescriptions()
+```js
+    mapTransactionDescriptions(){
+        let description = [];
+        for(let i = 0; i < this.transactions.length; i++) {
+        let desc = this.transactions[i].transaction_description;
+        description.push(desc); 
+            }
+        return description;
+    }
+```
+Принцип работы данного метода индентичен другим методам в моей программе
+
+# Теперь проверим работу моей программы:
+```js
+const obj = new TransactionAnalyzer(transactions);
+
+let new_tr1 = {
+    "transaction_id": "121",
+    "transaction_date": "2019-02-28",
+    "transaction_amount": 1800.00,
+    "transaction_type": "debit",
+    "transaction_description": "Shopping at USM",
+    "merchant_name": "FashionStoreUSM",
+    "card_type": "STEPUHA"
+  }
+  let new_tr2 = {
+    "transaction_id": "122",
+    "transaction_date": "2019-02-28",
+    "transaction_amount": 1800.00,
+    "transaction_type": "debit",
+    "transaction_description": "Shopping at USM",
+    "merchant_name": "FashionStoreUSM",
+    "card_type": "STEPUHAURA"
+  }
+  let new_tr3 = {
+    "transaction_id": "123",
+    "transaction_date": "2019-02-28",
+    "transaction_amount": 1800.00,
+    "transaction_type": "debit",
+    "transaction_description": "Shopping at USM",
+    "merchant_name": "FashionStoreUSM",
+    "card_type": "STEPUHADA"
+  }
+  let new_tr4 = {
+    "transaction_id": "124",
+    "transaction_date": "2019-02-28",
+    "transaction_amount": 1800.00,
+    "transaction_type": "debit",
+    "transaction_description": "Shopping at USM",
+    "merchant_name": "FashionStoreUSM",
+    "card_type": "STEPUHANET"
+  }
+console.log(obj.addTransaction(new_tr1))
+console.log(obj.addTransaction(new_tr2))
+console.log(obj.addTransaction(new_tr3))
+console.log(obj.addTransaction(new_tr4)) //add new  tr
+
+
+console.log(obj.findTransactionById('121'))//find(show) by id
+
+
+let sum = obj.calculateTotalAmount()// SUM
+console.log(sum)
+
+
+let sum_date = obj.calculateTotalAmountByDate(null, 2, null )// sum by date
+console.log(sum_date)
+
+
+let type = obj.getTransactionByType('debit')// get by type
+console.log(type)
+
+
+let dateRange = obj.getTransactionsInDateRange('2019-03-05','2019-03-07')
+console.log(dateRange)
+
+
+let merchName = obj.getTransactionsByMerchant('FashionStoreUSM')
+console.log(merchName)
+
+
+let average_sum = obj.calculateAverageTransactionAmount()
+console.log(average_sum)
+
+
+let amount_range = obj.getTransactionsByAmountRange(150, 1900)
+console.log(amount_range)
+
+
+let debit_amount = obj.calculateTotalDebitAmount()
+console.log(debit_amount)
+
+
+let most_tr_ymd = obj.findMostTransactionsMonth()
+console.log(most_tr_ymd)
+
+
+let most_debit_tr_ymd = obj.findMostDebitTransactionMonth()
+console.log(most_debit_tr_ymd)
+
+
+let most_tr_types = obj.mostTransactionTypes()
+console.log(most_tr_types)
+
+
+let get_tr_before_date = obj.getTransactionsBeforeDate('2019-01-03')
+console.log(get_tr_before_date)
+
+
+let tr_desc = obj.mapTransactionDescriptions()
+console.log(tr_desc)
+```
+
+# Источники:
+
+[learn js](https://learn.javascript.ru/first-steps)
+[Youtube](https://www.youtube.com/)
+
