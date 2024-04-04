@@ -1,6 +1,3 @@
-let transactions = require("./transactions.json");
-
-
 /**
  * Class analyzer for transactions
  * @class
@@ -199,7 +196,7 @@ class TransactionAnalyzer {
     
         let mostTransactionsMonth = 0; 
     
-        for (let i = 1; i < monthCounts.length; i++) {
+        for (let i = 0; i < monthCounts.length; i++) {
             if (monthCounts[i] > monthCounts[mostTransactionsMonth]) {
                 mostTransactionsMonth = i;
             }
@@ -320,10 +317,11 @@ class TransactionAnalyzer {
 
 }
 
-let obj1 = new TransactionAnalyzer(transactions);
+const transactions = require("./transactions.json");
+const obj = new TransactionAnalyzer(transactions);
 
-let average_sum = obj1.()
-console.log(average_sum)
+let cumalala = obj.calculateTotalAmount()
+console.log(cumalala)
 
 
 

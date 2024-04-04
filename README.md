@@ -176,3 +176,31 @@ calculateTotalDebitAmount(){
 }
 ```
 Синтаксис данного метода так же не имеет в себе ничего особенного, он схож с другими методами, связанными с суммами
+## findMostTransactionsMonth()
+```js
+let monthCounts = [0, 0, 0, 0]; 
+        for (let i = 0; i < this.transactions.length; i++) {
+            let transactionMonth = parseInt(this.transactions[i].transaction_date.split('-')[1]);
+            monthCounts[transactionMonth - 1]++;
+        }
+    
+        let mostTransactionsMonth = 0; 
+    
+        for (let i = 1; i < monthCounts.length; i++) {
+            if (monthCounts[i] > monthCounts[mostTransactionsMonth]) {
+                mostTransactionsMonth = i;
+            }
+        }
+        let most_tr_month = mostTransactionsMonth + 1;
+        if(most_tr_month === 1) {
+            return 'January';
+        }else if (most_tr_month === 2) {
+            return 'February';
+        }else if (most_tr_month === 3) {
+            return 'March';
+        }else {
+            return 'April';
+        }
+    }
+```
+Метод `findMostTransactionsMonth()` вернет нам месяц, в котором было больше всего транзакций. Для начала я создаю массив с 4-мя элементами, которые равны `0`. Они отображают 4 месяца. Так как массивы индексируются с 0, а номера месяцев начинаются с 1, мы вычитаем 1 из `transactionMonth`, чтобы получить правильный индекс массива, после чего его увеличиваем на единицу(кол-во транзакций). ДАлее создаем переменную `mostTransactionMonth` и цикл `for` для перебора массива `monthCounts`. Если текущий имеет наибольшее значение, чем предыдущий, то переменная `mostTransactionsMonth` будет равна индексу этого месяца в массиве. `most_tr_month` поможет мне вернуть индекс = месяцу для удобства
