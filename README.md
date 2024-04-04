@@ -176,3 +176,31 @@ calculateTotalDebitAmount(){
 }
 ```
 Синтаксис данного метода так же не имеет в себе ничего особенного, он схож с другими методами, связанными с суммами
+## findMostTransactionsMonth()
+```js
+        let monthCounts = [0, 0, 0, 0]; 
+        for (let i = 0; i < this.transactions.length; i++) {
+            let transactionMonth = parseInt(this.transactions[i].transaction_date.split('-')[1]);
+            monthCounts[transactionMonth - 1]++;
+        }
+    
+        let mostTransactionsMonth = 0; 
+    
+        for (let i = 1; i < monthCounts.length; i++) {
+            if (monthCounts[i] > monthCounts[mostTransactionsMonth]) {
+                mostTransactionsMonth = i;
+            }
+        }
+        let most_tr_month = mostTransactionsMonth + 1;
+        if(most_tr_month === 1) {
+            return 'January';
+        }else if (most_tr_month === 2) {
+            return 'February';
+        }else if (most_tr_month === 3) {
+            return 'March';
+        }else {
+            return 'April';
+        }
+    }
+```
+Метод findMostTransactionsMonth() должен найти и вернуть месяц, в котором было произведено больше всего транзакций. Для начала я создал массив с 4-мя нулями, которые будут по индексу связаны с каждым из месяцев. Благодаря циклу `for` я прохожусь по всем транзакциям и методом `split` и функцией `parseInt` обращаюсь к месяцу с индексом `[1]` и присваиваю его к переменной `transactionMonth`
